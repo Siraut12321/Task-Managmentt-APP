@@ -74,7 +74,8 @@ task-management-app/
 │   ├── routes/
 │   │   ├── authRoutes.js
 │   │   └── taskRoutes.js
-│   └── server.js
+│   ├── server.js
+│   └── vercel.json               # Vercel serverless config
 │
 └── frontend-next/
     ├── app/
@@ -96,9 +97,10 @@ task-management-app/
     │   └── AuthContext.tsx       # Auth state + requireAuth() guard
     ├── lib/
     │   └── api.ts                # Axios instance with JWT interceptor
-    └── types/
-        ├── task.ts
-        └── user.ts
+    ├── types/
+│   │   ├── task.ts
+│   │   └── user.ts
+    └── vercel.json               # Vercel Next.js config
 ```
 
 ---
@@ -204,9 +206,10 @@ npm run dev
 
 | Variable     | Description                       | Example                                 |
 |--------------|-----------------------------------|-----------------------------------------|
-| `MONGO_URI`  | MongoDB connection string         | `mongodb://...`                         |
-| `JWT_SECRET` | Secret key for signing JWT tokens | `my_super_secret_key_123`               |
-| `PORT`       | Port for the Express server       | `5000`                                  |
+| `MONGO_URI`      | MongoDB connection string         | `mongodb://...`                         |
+| `JWT_SECRET`     | Secret key for signing JWT tokens | `my_super_secret_key_123`               |
+| `PORT`           | Port for the Express server       | `5000`                                  |
+| `FRONTEND_URL`   | Allowed CORS origin (frontend)    | `https://your-frontend.vercel.app`      |
 
 > ⚠️ Never commit your `.env` file. It is already listed in `.gitignore`.
 
