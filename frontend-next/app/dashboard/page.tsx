@@ -39,6 +39,7 @@ export default function Dashboard() {
   const [loading, setLoading] = useState(true);
   const [editTask, setEditTask] = useState<Task | null>(null);
   const [deleteId, setDeleteId] = useState<string | null>(null);
+  const [activeTab, setActiveTab] = useState<'new' | 'inProgress' | 'completed'>('new');
 
   const fetchTasks = useCallback(async () => {
     if (!user) { setLoading(false); return; }
@@ -133,15 +134,21 @@ export default function Dashboard() {
   const hour = new Date().getHours();
   const greeting = hour < 12 ? 'morning' : hour < 18 ? 'afternoon' : 'evening';
 
+  const tabs: { key: 'new' | 'inProgress' | 'completed'; label: string }[] = [
+    { key: 'new', label: 'New' },
+    { key: 'inProgress', label: 'In Progress' },
+    { key: 'completed', label: 'Done' },
+  ];
+
   return (
     <div className="flex h-screen overflow-hidden bg-[#0f0f1a]">
       <Sidebar />
 
-      <main className="flex-1 ml-64 flex flex-col overflow-hidden">
+      <main className="flex-1 md:ml-64 flex flex-col overflow-hidden">
         <motion.div
           initial={{ opacity: 0, y: -10 }}
           animate={{ opacity: 1, y: 0 }}
-          className="flex-shrink-0 z-30 bg-slate-900/70 backdrop-blur-xl border-b border-slate-800 px-6 py-4 flex items-center justify-between"
+          className="flex-shrink-0 z-30 bg-slate-900/70 backdrop-blur-xl border-b border-slate-800 px-6 py-4 md:px-6 pl-16 md:pl-6 flex items-center justify-between"
         >
           <div>
             <h1 className="text-xl font-bold text-white">
@@ -156,43 +163,66 @@ export default function Dashboard() {
           </p>
         </motion.div>
 
-        <div className="flex-1 overflow-hidden p-5">
+        {/* Mobile tab switcher */}
+        <div className="md:hidden flex border-b border-slate-800 bg-slate-900/70 flex-shrink-0">
+          {tabs.map((tab) => (
+            <button
+              key={tab.key}
+              onClick={() => setActiveTab(tab.key)}
+              className={`flex-1 py-2.5 text-xs font-semibold transition-colors ${
+                activeTab === tab.key
+                  ? 'text-white border-b-2 border-brand'
+                  : 'text-slate-500'
+              }`}
+            >
+              {tab.label}
+            </button>
+          ))}
+        </div>
+
+        <div className="flex-1 overflow-hidden p-3 md:p-5">
           {loading ? (
             <div className="grid grid-cols-1 md:grid-cols-3 gap-5 h-full">
               {[0, 1, 2].map((i) => <ColumnSkeleton key={i} />)}
             </div>
           ) : (
             <div className="grid grid-cols-1 md:grid-cols-3 gap-5 h-full">
-              <TaskColumn
-                type="new" index={0}
-                tasks={newCol}
-                onToggle={handleToggle}
-                onEdit={guarded(setEditTask)}
-                onDeleteRequest={guarded((id: string) => setDeleteId(id))}
-                onMoveToProgress={handleMoveToProgress}
-                onSchedule={handleSchedule}
-                editTask={editTask}
-                onSubmit={editTask ? handleUpdate : handleCreate}
-                onCancel={() => setEditTask(null)}
-              />
-              <TaskColumn
-                type="inProgress" index={1}
-                tasks={inProgressCol}
-                onToggle={handleToggle}
-                onEdit={guarded(setEditTask)}
-                onDeleteRequest={guarded((id: string) => setDeleteId(id))}
-                onMoveToProgress={handleMoveToProgress}
-                onSchedule={handleSchedule}
-              />
-              <TaskColumn
-                type="completed" index={2}
-                tasks={completedCol}
-                onToggle={handleToggle}
-                onEdit={guarded(setEditTask)}
-                onDeleteRequest={guarded((id: string) => setDeleteId(id))}
-                onMoveToProgress={handleMoveToProgress}
-                onSchedule={handleSchedule}
-              />
+              <div className={activeTab === 'new' ? 'block' : 'hidden md:block'}>
+                <TaskColumn
+                  type="new" index={0}
+                  tasks={newCol}
+                  onToggle={handleToggle}
+                  onEdit={guarded(setEditTask)}
+                  onDeleteRequest={guarded((id: string) => setDeleteId(id))}
+                  onMoveToProgress={handleMoveToProgress}
+                  onSchedule={handleSchedule}
+                  editTask={editTask}
+                  onSubmit={editTask ? handleUpdate : handleCreate}
+                  onCancel={() => setEditTask(null)}
+                />
+              </div>
+              <div className={activeTab === 'inProgress' ? 'block' : 'hidden md:block'}>
+                <TaskColumn
+                  type="inProgress" index={1}
+                  tasks={inProgressCol}
+                  onToggle={handleToggle}
+                  onEdit={guarded(setEditTask)}
+                  onDeleteRequest={guarded((id: string) => setDeleteId(id))}
+                  onMoveToProgress={handleMoveToProgress}
+                  onSchedule={handleSchedule}
+                />
+              </div>
+              <div className={activeTab === 'completed' ? 'block' : 'hidden md:block'}>
+                <TaskColumn
+                  type="completed" index={2}
+                  tasks={completedCol}
+                  onToggle={handleToggle}
+                  onEdit={guarded(setEditTask)}
+                  onDeleteRequest={guarded((id: string) => setDeleteId(id))}
+                  onMoveToProgress={handleMoveToProgress}
+                  onSchedule={handleSchedule}
+                />
+              </div>
             </div>
           )}
         </div>
