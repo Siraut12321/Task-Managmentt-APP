@@ -1,11 +1,20 @@
 # TaskFlow — Full-Stack Task Management App
 
+<div align="center">
+
+### 🚀 [Live Demo → task-managmentt-app-7eso.vercel.app](https://task-managmentt-app-7eso.vercel.app/dashboard)
+
+</div>
+
+---
+
 ![License](https://img.shields.io/badge/license-MIT-blue.svg)
 ![Node](https://img.shields.io/badge/node-%3E%3D18.0.0-brightgreen)
 ![Next.js](https://img.shields.io/badge/next.js-14-black?logo=next.js)
 ![MongoDB](https://img.shields.io/badge/mongodb-atlas-47A248?logo=mongodb)
 ![TailwindCSS](https://img.shields.io/badge/tailwindcss-3.x-38BDF8?logo=tailwindcss)
 ![TypeScript](https://img.shields.io/badge/typescript-5.x-3178C6?logo=typescript)
+![Vercel](https://img.shields.io/badge/deployed%20on-vercel-000000?logo=vercel)
 
 A production-ready Kanban task manager built with **Next.js 14 + Node.js/Express + MongoDB Atlas**. Features JWT authentication, smart task column logic, priority management, monthly scheduling, and a polished dark glassmorphism UI with Framer Motion animations.
 
